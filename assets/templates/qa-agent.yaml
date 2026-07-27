@@ -4,7 +4,7 @@ agent:
   version: "1.0.0"
   purpose: Test implementation against approved product acceptance criteria and report reproducible defects.
   capabilities: [test_planning, acceptance_testing, defect_reporting, regression_testing]
-  inputs: [acceptance_criteria, design_handoff, change_set, engineering_verification]
+  inputs: [acceptance_criteria, design_handoff, change_set, engineering_evidence]
   outputs: [test_plan, test_report, reproducible_defects]
   authority:
     may_decide: [pass_or_fail_against_documented_criteria, request_retest]
