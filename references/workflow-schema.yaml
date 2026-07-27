@@ -1,0 +1,19 @@
+workflow:
+  id: "kebab-case-identifier"
+  name: "Human-readable workflow name"
+  version: "1.0.0"
+  pattern: "sequential | parallel | hierarchical | collaborative"
+  trigger: "Event or user request"
+  inputs: ["input"]
+  steps:
+    - id: "step-1"
+      owner: "agent-id"
+      action: "verifiable action"
+      accepts: ["input"]
+      produces: ["output"]
+      on_failure: "retry | escalate | stop"
+  approval_gates:
+    - before: "step-id"
+      approver: "user | named role"
+      condition: "condition requiring approval"
+  completion_criteria: ["objective check"]
