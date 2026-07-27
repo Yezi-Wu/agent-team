@@ -1,0 +1,14 @@
+trace:
+  trace_id: "unique identifier"
+  workflow_id: "workflow-id"
+  started_at: "ISO-8601 timestamp"
+  user_goal: "redacted goal"
+  events:
+    - timestamp: "ISO-8601 timestamp"
+      event_type: "decision | handoff | tool_use | output | error | approval"
+      actor: "agent-id | user | host"
+      summary: "concise, non-sensitive description"
+      input_refs: ["artifact reference"]
+      output_refs: ["artifact reference"]
+      rationale: "why this route was chosen"
+  outcome: "completed | stopped | failed"
