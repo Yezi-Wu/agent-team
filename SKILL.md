@@ -75,20 +75,20 @@ By default, a Specialist or Verifier reads only the paths named in its task pack
 
 This is an instruction-level access boundary, not a security boundary: hosts may still technically grant every task access to the same project directory. Use separate worktrees or host-level sandboxing when true filesystem isolation is required.
 
-## Thin main-thread reporting
+## Confirmed versions and retention
 
-Keep the Coordinator's chat context small. Child Agents write full artifacts to their assigned folders and return only a compact handoff to the Coordinator. Do not paste a child's full response or full artifact into the Coordinator chat by default.
+Treat a version as a user-confirmed project state, never as an automatic checkpoint. Create `Agent work/shared/versions/` with `registry.yaml`, `CHANGELOG.md`, and `cleanup-candidates.md` for every project that produces lasting artifacts.
 
-For each completed or approved output, show the user one short delivery card in the Coordinator chat:
+When the user explicitly says to confirm, save, or release a version:
 
-```text
-Delivered: <artifact name>
-Status: <draft | approved | blocked>
-Summary: <one or two factual sentences>
-Open: <relative path under Agent work/deliverables/ or role folder>
-```
+1. Freeze the approved deliverable list in `deliverables/index.md`.
+2. Record version ID, timestamp, user confirmation, scope, approved artifact paths, and rollback reference in `shared/versions/registry.yaml` and `CHANGELOG.md`.
+3. If the project is a Git repository, create a dedicated commit and tag for the confirmed state. If it is not, create a dated snapshot of the approved deliverables and the exact changed project files in `shared/versions/snapshots/`.
+4. Update `dashboard.md` with the active confirmed version.
 
-The delivery card is the main-chat view; the linked file is the full source of truth. Read or display the full artifact in the Coordinator chat only when the user explicitly asks to open it, revise it, or make a decision that requires its contents. When a child output is not yet approved, link its role-folder path; when approved, link the `deliverables/` path.
+On a rollback request, first show the target version, affected files, and current version. Roll back only after explicit user confirmation. Before rollback, create a new safety checkpoint of the current state. Use Git restoration when a Git rollback reference exists; otherwise restore the recorded snapshot. Record the rollback as a new confirmed version event; never erase version history.
+
+After a confirmed version, automatically delete only clearly disposable files created under `Agent work/.tmp/`. Do not automatically delete drafts, task packets, traces, deliverables, snapshots, or project files. List other obsolete documents in `shared/versions/cleanup-candidates.md` with path, reason, and proposed action. Archive or delete those candidates only after the user confirms the cleanup plan.
 
 Do not require Specialists to self-review. A Specialist supplies the requested artifact and concrete execution evidence only. The Independent Verifier performs the quality and acceptance check. When it fails, the Coordinator sends the specific failed criteria to the responsible Specialist, then schedules one re-verification. Escalate repeated failures or changed criteria to the user. Do not enable automatic external publication, account actions, spending, deployment, or other irreversible actions; request approval for those actions.
 
@@ -120,6 +120,11 @@ Agent work/
     index.md
     final-summary.md
   shared/
+    versions/
+      registry.yaml
+      CHANGELOG.md
+      cleanup-candidates.md
+      snapshots/
     registry.yaml
     workflow.yaml
     trace.md
