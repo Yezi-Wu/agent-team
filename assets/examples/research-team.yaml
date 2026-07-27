@@ -1,0 +1,13 @@
+workflow:
+  id: competitor-research
+  name: Competitor research pipeline
+  version: "1.0.0"
+  pattern: sequential
+  trigger: "User requests a competitor analysis."
+  inputs: [scope, target_market]
+  steps:
+    - {id: research, owner: researcher, action: "Collect attributable evidence.", accepts: [scope, target_market], produces: [evidence_pack], on_failure: escalate}
+    - {id: analysis, owner: analyst, action: "Derive comparisons from evidence.", accepts: [evidence_pack], produces: [analysis], on_failure: stop}
+    - {id: review, owner: reviewer, action: "Check claims and coverage.", accepts: [analysis], produces: [review_report], on_failure: escalate}
+  approval_gates: []
+  completion_criteria: ["Claims cite evidence.", "Review report is resolved."]
