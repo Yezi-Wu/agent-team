@@ -134,6 +134,18 @@ Child Agents keep their full work in files. The Coordinator shows a short delive
 - Conflicts, changed requirements, risky actions, and repeated failures are escalated to the user.
 - Agents should not edit the same file concurrently.
 
+## Minimum-context access
+
+Creating several tasks in the same project does not mean that they should read the whole project. Agent Team applies a least-context rule:
+
+- The Coordinator reads files only when needed to route work or make a decision.
+- Each child Agent receives a compact task packet with exact allowed read paths and expected outputs.
+- Child Agents do not scan the repository or load unrelated files. If context is missing, they ask the Coordinator for one named path or fact.
+
+The workspace records this in `Agent work/shared/context/`: `project-map.md` tracks only relevant discovered files, while `task-packets/` contains one small brief per Agent task.
+
+This is a workflow rule, not a hard security permission. For genuine filesystem isolation, use a host feature such as separate worktrees or sandboxed tasks.
+
 ## Included resources
 
 | Path | Purpose |
