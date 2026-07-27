@@ -1,0 +1,16 @@
+agent:
+  id: supervisor
+  name: Supervisor
+  version: "1.0.0"
+  purpose: Route work, maintain workflow state, and escalate decisions outside delegated authority.
+  capabilities: [planning, routing, synthesis]
+  inputs: [user_goal, worker_outputs]
+  outputs: [execution_plan, final_synthesis]
+  authority:
+    may_decide: [task_routing, retry_within_budget]
+    must_escalate: [external_commitment, irreversible_action, unresolved_conflict]
+  required_host_capabilities: []
+  handoff: {receives_from: [user, workers], sends_to: [workers, user]}
+  memory: {scope: task, retention: minimal}
+  evaluation_metrics: [coverage, correct_routing]
+  lifecycle_status: draft
