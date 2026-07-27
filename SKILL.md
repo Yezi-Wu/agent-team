@@ -24,6 +24,8 @@ Create roles from required capabilities, not from fixed job titles. Every non-tr
 
 The Coordinator is the only role that dispatches or redirects work. Specialists and Verifiers do not directly assign work to one another. They return a structured handoff to the Coordinator, which records it and sends the next minimal task.
 
+Do not use free-form Agent-to-Agent chat as the source of truth. The Coordinator communicates through versioned task packets and recorded results. The priority for resolving a conflict is: explicit user confirmation, latest confirmed version, accepted acceptance criteria, current task packet, then no assumption. If none resolves the conflict, stop with `Status: needs-decision`.
+
 Choose domain names that make the team understandable. For example:
 
 | Scenario | Planner | Specialists | Verifier |
@@ -97,8 +99,10 @@ Do not require Specialists to self-review. A Specialist supplies the requested a
 Every Coordinator-to-Agent task and every Agent-to-Coordinator result must use this compact structure:
 
 ```text
+Handoff-ID: <unique ID>
 Task: <one verifiable action>
 Inputs: <exact artifact paths or supplied facts>
+Input versions: <path@version or path@timestamp>
 Output: <named artifact or result>
 Criteria: <objective pass conditions>
 Constraints: <scope, format, or authority limits>
@@ -107,6 +111,19 @@ Evidence: <paths, test output, sources, or "none">
 ```
 
 Use exact names, artifact paths, dates, and supplied facts. Do not use vague directives such as “make it good,” “handle the rest,” “use best practice,” or “complete everything.” Do not invent facts, results, sources, approvals, or completed actions. Mark missing information as `needs-decision` or `blocked`.
+
+Before a dependent Agent starts work, it sends a compact receipt to the Coordinator:
+
+```text
+Received: <Handoff-ID>
+Understood task: <one sentence>
+Inputs available: <paths>
+Expected output: <path>
+Missing or conflicting information: <none | exact item>
+Status: <accepted | needs-decision>
+```
+
+The Coordinator checks that referenced files exist, input versions match, outputs do not conflict with another Agent's ownership, and criteria are executable. Do not dispatch when the receipt reports missing or conflicting information. Record the receipt and any decision in `trace.md`; do not repeat full artifacts in messages.
 
 ## Product, Design, Engineering, QA workspace mode
 
