@@ -120,6 +120,10 @@ For a software team, roles are normally `product/`, `designer/`, `engineer/`, an
 
 Open `Agent work/dashboard.md` when you want one view of all Agent work: current task, status, latest artifact, verifier result, blocker, and next action. Open `Agent work/deliverables/index.md` when you only want the approved final outputs.
 
+### See outputs without bloating the coordinator chat
+
+Child Agents keep their full work in files. The Coordinator shows a short delivery card in the main chat—artifact name, status, factual summary, and file path—rather than copying every child response into its own context. Open a linked artifact only when you need its full content. This keeps the main task readable and reduces repeated context.
+
 ## Collaboration rules
 
 - Every capability has one accountable owner.
