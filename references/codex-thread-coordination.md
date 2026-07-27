@@ -9,7 +9,7 @@ Use this procedure after the user requests a team or a multi-agent system. The `
 5. When Design finishes, record the handoff. Request user approval for material design direction if required. Then message Engineering with exact product and design paths.
 6. When Engineering finishes, ask it to record implementation evidence, not a quality self-review. Message QA with exact paths to product acceptance criteria, design handoff, and engineering evidence.
 7. When QA reports failures, append them to the trace and send only the failed criteria and reproducible steps to Engineering. After Engineering records a fix, send QA one retest request. Escalate any remaining failure to the user.
-8. After every dispatch, result, decision, or blocker, update `dashboard.md`. When QA passes, add the approved user-facing artifact to `deliverables/index.md`, update `deliverables/final-summary.md`, record the result, and return a final coordinator summary. Do not claim deployment, testing, or external publication without evidence.
+8. After every dispatch, result, decision, or blocker, update `dashboard.md`. When QA passes, add the approved user-facing artifact to `deliverables/index.md`, update `deliverables/final-summary.md`, and show one compact delivery card in the Coordinator chat with status, one- or two-sentence factual summary, and the file path. Do not copy the full child response into the Coordinator chat unless the user asks. Do not claim deployment, testing, or external publication without evidence.
 
 Suggested one-sentence invocation:
 
