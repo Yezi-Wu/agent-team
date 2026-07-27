@@ -10,5 +10,5 @@ agent:
   required_host_capabilities: []
   handoff: {receives_from: [supervisor], sends_to: [supervisor]}
   memory: {scope: task, retention: minimal}
-  evaluation_metrics: [accuracy, completeness]
+  evaluation_metrics: [output_completeness, evidence_quality]
   lifecycle_status: draft
