@@ -2,8 +2,8 @@
 
 Use this procedure after the user requests a team or a multi-agent system. The `Agent work/` workspace and verification loop are defaults; do not require the user to restate them.
 
-1. Ensure the user supplied a project directory. Create `Agent work/` there and the four role folders plus `shared/`.
-2. Keep the originating task as the mandatory Coordinator. Create Product, Design, Engineering, and QA tasks in the same local project directory. Their prompts must use the concise handoff structure and name only their assigned folder, files, boundaries, and upstream files to read.
+1. Treat the current project task that invoked `$agent-team` as the mandatory Coordinator. Do not create a separate Coordinator task. Ensure the user supplied a project directory. Create `Agent work/` there and the four role folders plus `shared/`.
+2. Create only Product, Design, Engineering, and QA tasks in the same local project directory when those roles are needed. Their prompts must use the concise handoff structure and name only their assigned folder, files, boundaries, and upstream files to read.
 3. Start Product immediately. Start Design, Engineering, and QA in waiting state: they must not invent missing inputs.
 4. When Product finishes, record a coordinator trace entry and request user approval if requirements affect scope, budget, dates, or material commitments. Then message Design with exact product-file paths.
 5. When Design finishes, record the handoff. Request user approval for material design direction if required. Then message Engineering with exact product and design paths.
