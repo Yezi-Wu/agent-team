@@ -1,0 +1,12 @@
+registry:
+  version: "1.0"
+  agents:
+    - id: "agent-id"
+      current_version: "1.0.0"
+      status: "active"
+      capabilities: ["capability"]
+      location: "relative/path/to/definition.yaml"
+      owner: "team or person"
+      updated_at: "ISO-8601 timestamp"
+  capability_index:
+    capability: ["agent-id"]
