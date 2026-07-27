@@ -47,6 +47,36 @@ Create these two project-wide views in every `Agent work/` workspace:
 
 Each Agent result must name its exact artifact path. The Coordinator adds that path to `dashboard.md`. Only after the Verifier passes an artifact, the Coordinator adds it to `deliverables/index.md` or creates the needed final user-facing copy there. Never list a draft as a deliverable.
 
+## Thin main-thread reporting
+
+Keep the Coordinator's chat context small. Child Agents write full artifacts to their assigned folders and return only a compact handoff to the Coordinator. Do not paste a child's full response or full artifact into the Coordinator chat by default.
+
+For each completed or approved output, show the user one short delivery card in the Coordinator chat:
+
+```text
+Delivered: <artifact name>
+Status: <draft | approved | blocked>
+Summary: <one or two factual sentences>
+Open: <relative path under Agent work/deliverables/ or role folder>
+```
+
+The delivery card is the main-chat view; the linked file is the full source of truth. Read or display the full artifact in the Coordinator chat only when the user explicitly asks to open it, revise it, or make a decision that requires its contents. When a child output is not yet approved, link its role-folder path; when approved, link the `deliverables/` path.
+
+## Thin main-thread reporting
+
+Keep the Coordinator's chat context small. Child Agents write full artifacts to their assigned folders and return only a compact handoff to the Coordinator. Do not paste a child's full response or full artifact into the Coordinator chat by default.
+
+For each completed or approved output, show the user one short delivery card in the Coordinator chat:
+
+```text
+Delivered: <artifact name>
+Status: <draft | approved | blocked>
+Summary: <one or two factual sentences>
+Open: <relative path under Agent work/deliverables/ or role folder>
+```
+
+The delivery card is the main-chat view; the linked file is the full source of truth. Read or display the full artifact in the Coordinator chat only when the user explicitly asks to open it, revise it, or make a decision that requires its contents. When a child output is not yet approved, link its role-folder path; when approved, link the `deliverables/` path.
+
 Do not require Specialists to self-review. A Specialist supplies the requested artifact and concrete execution evidence only. The Independent Verifier performs the quality and acceptance check. When it fails, the Coordinator sends the specific failed criteria to the responsible Specialist, then schedules one re-verification. Escalate repeated failures or changed criteria to the user. Do not enable automatic external publication, account actions, spending, deployment, or other irreversible actions; request approval for those actions.
 
 ## Concise handoffs
