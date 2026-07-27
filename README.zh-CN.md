@@ -100,6 +100,10 @@
 ```text
 Agent work/
 ├── README.md
+├── dashboard.md             # 总控维护的全部 Agent 工作总览
+├── deliverables/            # 仅放已确认、面向用户的交付物
+│   ├── index.md
+│   └── final-summary.md
 ├── shared/
 │   ├── registry.yaml       # 当前角色与能力
 │   ├── workflow.yaml       # 交接、审批与失败处理规则
@@ -113,6 +117,8 @@ Agent work/
 ```
 
 软件团队通常会使用 `product/`、`designer/`、`engineer/`、`qa/`；其他场景会使用对应领域的角色名称。
+
+想查看所有 Agent 的工作时，打开 `Agent work/dashboard.md`：里面会列出当前任务、状态、最新产物、审核结果、阻塞项和下一步。只想查看最终已确认的产出时，打开 `Agent work/deliverables/index.md`。
 
 ## 协作规则
 
