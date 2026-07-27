@@ -1,0 +1,15 @@
+workflow:
+  id: self-media-content-loop
+  name: Self-media content creation and review loop
+  version: "1.0.0"
+  pattern: hierarchical
+  trigger: "User requests content planning or creation."
+  inputs: [account_goal, audience, platform_constraints]
+  steps:
+    - {id: strategy, owner: content_strategist, action: "Define content brief and acceptance criteria.", accepts: [account_goal, audience, platform_constraints], produces: [content_brief], on_failure: escalate}
+    - {id: research, owner: trend_researcher, action: "Collect attributable topic evidence.", accepts: [content_brief], produces: [research_pack], on_failure: escalate}
+    - {id: create, owner: content_creator, action: "Create draft from brief and evidence.", accepts: [content_brief, research_pack], produces: [content_draft], on_failure: stop}
+    - {id: review, owner: editorial_reviewer, action: "Check draft against brief, facts, brand rules, and platform constraints.", accepts: [content_brief, research_pack, content_draft], produces: [review_report], on_failure: escalate}
+  approval_gates:
+    - {before: publish, approver: user, condition: "Any external publication or account action."}
+  completion_criteria: ["Editorial review passes.", "User approves publication when publication is requested."]
