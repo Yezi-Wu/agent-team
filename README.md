@@ -146,6 +146,16 @@ The workspace records this in `Agent work/shared/context/`: `project-map.md` tra
 
 This is a workflow rule, not a hard security permission. For genuine filesystem isolation, use a host feature such as separate worktrees or sandboxed tasks.
 
+## Confirmed versions and rollback
+
+Agent Team records a version only when you explicitly confirm it. Each confirmed version records its approved deliverables, scope, timestamp, and rollback reference in `Agent work/shared/versions/`.
+
+- **Git project:** the confirmed scope receives a dedicated commit and tag.
+- **Non-Git project:** Agent Team saves a dated snapshot of approved deliverables and explicitly changed files.
+- **Rollback:** the Coordinator first shows the target and affected files. After your confirmation, it saves the current state as a safety checkpoint, restores the selected version, and keeps the full version history.
+
+After confirmation, only files inside `Agent work/.tmp/` are automatically deleted. Other potentially obsolete documents are listed in `cleanup-candidates.md`; you choose whether to archive or delete them.
+
 ## Included resources
 
 | Path | Purpose |
