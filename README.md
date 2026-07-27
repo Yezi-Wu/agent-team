@@ -16,6 +16,18 @@ It is an architecture and coordination layer—not an MCP server, a model provid
 - Creates visible role tasks when the host supports separate tasks, then coordinates documented handoffs between them.
 - Keeps risky external actions—publishing, spending, deployments, or real account operations—behind human approval.
 
+## Automatic collaboration mode
+
+At the start of a task, the Coordinator automatically chooses the lightest safe collaboration mode and records the reason in `Agent work/dashboard.md`. You do not need to choose one yourself. You can still override it by saying `Quick mode`, `Standard mode`, or `Strict mode`.
+
+| Mode | Typical use | What happens |
+| --- | --- | --- |
+| **Quick** | A low-risk, easily reversible result | Assign → produce → deliver. No routine receipt or separate review. |
+| **Standard** | Normal multi-Agent work with dependencies | A short receipt before dependent work; one final independent review; one focused repair if it fails. |
+| **Strict** | Publishing, deployment, spending, sensitive data, irreversible work, or high error cost | Full handoff receipts, milestone reviews, detailed trace, and explicit human approval before irreversible actions. |
+
+The Skill chooses **Strict** automatically for external or irreversible actions, **Quick** only for simple low-risk work, and **Standard** for the normal case. This avoids paying for unnecessary back-and-forth while keeping important work reliable.
+
 ## When to use it
 
 Use Agent Team when a request has several dependent pieces of work, requires independent review, or benefits from clear ownership. It is useful for software delivery, self-media operations, market research, recruiting, learning plans, and many other multi-step scenarios.
@@ -129,7 +141,7 @@ Child Agents keep their full work in files. The Coordinator shows a short delive
 - Every capability has one accountable owner.
 - The Coordinator is the only role that assigns or redirects work.
 - Agents hand off concise documented outputs: handoff ID, exact inputs and versions, output, criteria, constraints, status, and evidence.
-- A dependent Agent sends a short `accepted` receipt before it starts; missing or conflicting information returns to the Coordinator instead of becoming an assumption.
+- In Standard mode, a dependent Agent sends a short `accepted` receipt before it starts; Strict mode does this for every dependent handoff. Quick mode skips routine receipts.
 - Specialists do not redefine upstream requirements.
 - The verifier tests against the Coordinator's acceptance criteria, not the implementer's interpretation.
 - Conflicts, changed requirements, risky actions, and repeated failures are escalated to the user.
