@@ -20,12 +20,9 @@ Clarify outcome and acceptance criteria
   -> (pass) Deliver and record the result
 ```
 
-Create roles from required capabilities, not from fixed job titles. Every non-trivial team needs:
+Create roles from required capabilities, not from fixed job titles. Every non-trivial team always needs a **Coordinator**. The Coordinator owns the goal, constraints, acceptance criteria, state, scheduling, and trace. Add Specialists only for required domain work and add one Independent Verifier only when the deliverable needs verification.
 
-- an **Owner/Planner** who defines the goal, constraints, and acceptance criteria;
-- one or more **Specialists** who perform independent domain work;
-- an **Independent Verifier** who checks the result against the Owner's criteria; and
-- a **Coordinator** who controls handoffs, records traceability, and asks for human decisions.
+The Coordinator is the only role that dispatches or redirects work. Specialists and Verifiers do not directly assign work to one another. They return a structured handoff to the Coordinator, which records it and sends the next minimal task.
 
 Choose domain names that make the team understandable. For example:
 
@@ -43,7 +40,23 @@ Do not force a Design or Engineering role into a scenario where it does not add 
 
 For any request that creates a team or produces lasting artifacts, put all team documents in `Agent work/` at the selected project root. Create a subfolder for every role and a `shared/` folder for the workflow, registry, and trace. Do this without requiring the user to repeat it.
 
-Enable independent verification and one or two automatic revise-and-reverify cycles by default. Do not enable automatic external publication, account actions, spending, deployment, or other irreversible actions; request approval for those actions.
+Do not require Specialists to self-review. A Specialist supplies the requested artifact and concrete execution evidence only. The Independent Verifier performs the quality and acceptance check. When it fails, the Coordinator sends the specific failed criteria to the responsible Specialist, then schedules one re-verification. Escalate repeated failures or changed criteria to the user. Do not enable automatic external publication, account actions, spending, deployment, or other irreversible actions; request approval for those actions.
+
+## Concise handoffs
+
+Every Coordinator-to-Agent task and every Agent-to-Coordinator result must use this compact structure:
+
+```text
+Task: <one verifiable action>
+Inputs: <exact artifact paths or supplied facts>
+Output: <named artifact or result>
+Criteria: <objective pass conditions>
+Constraints: <scope, format, or authority limits>
+Status: <done | blocked | needs-decision>
+Evidence: <paths, test output, sources, or "none">
+```
+
+Use exact names, artifact paths, dates, and supplied facts. Do not use vague directives such as “make it good,” “handle the rest,” “use best practice,” or “complete everything.” Do not invent facts, results, sources, approvals, or completed actions. Mark missing information as `needs-decision` or `blocked`.
 
 ## Product, Design, Engineering, QA workspace mode
 
@@ -66,23 +79,23 @@ Create three separate visible Codex tasks, each pointed at the same local projec
 
 - **Product Agent**: write `Agent work/product/PRD.md`, `user-flows.md`, and `acceptance-criteria.md`. Do not make design or code decisions.
 - **Design Agent**: read the approved product files, then write `Agent work/designer/design-spec.md` and `handoff.md`. Do not change requirements or production code.
-- **Engineer Agent**: read approved product and design handoffs, then implement only in the project area requested by the user. Write `Agent work/engineer/implementation-notes.md` and `verification.md`.
-- **QA Agent**: read `Agent work/product/acceptance-criteria.md`, the design handoff, and engineering verification. Write `Agent work/qa/test-plan.md` and `test-report.md`. Return failures to Engineer with reproducible steps; do not silently redefine the requirements.
+- **Engineer Agent**: read approved product and design handoffs, then implement only in the project area requested by the user. Write `Agent work/engineer/implementation-notes.md` and `evidence.md`; do not perform a separate acceptance review.
+- **QA Agent**: read `Agent work/product/acceptance-criteria.md`, the design handoff, and engineering evidence. Write `Agent work/qa/test-report.md`. Report only failed criteria with reproducible steps; do not silently redefine the requirements.
 
-Act as **Coordinator** in the originating task. Record decisions and each handoff in `Agent work/shared/trace.md`. Send the next task a message only after its required upstream files exist and the user has approved any stated approval gate. Do not ask agents to edit the same file. Pause and ask the user when a downstream agent finds an unresolved contradiction.
+Act as **Coordinator** in the originating task. Record every task, result, decision, and handoff in `Agent work/shared/trace.md`; maintain `registry.yaml` and `workflow.yaml`; and send every Agent message. Send the next task only after its required upstream files exist and the user has approved any stated approval gate. Do not ask agents to edit the same file. Pause and ask the user when a downstream agent finds an unresolved contradiction.
 
 For product work that includes implementation, use this specialized loop by default:
 
 ```text
 Product requirements + acceptance criteria
   -> Design specification
-  -> Engineering change + verification
+  -> Engineering change + evidence
   -> QA test report
   -> (fail) Engineering fix -> QA retest
   -> (pass) Coordinator final summary
 ```
 
-QA must test against the product acceptance criteria, not against the engineer's own interpretation. Set a maximum of two automatic fix/retest cycles; escalate remaining failures, changed requirements, or risky actions to the user.
+QA must test against the product acceptance criteria, not against the engineer's own interpretation. QA is the only acceptance-check role. After one failed QA report, the Coordinator sends the failed criteria to Engineering and schedules one QA retest; escalate remaining failures, changed requirements, or risky actions to the user.
 
 Use host task-creation and task-messaging capabilities only when available. If the host cannot make visible tasks, create the same workspace and run roles sequentially in the current task; clearly state that limitation.
 
