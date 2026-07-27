@@ -62,6 +62,19 @@ Open: <relative path under Agent work/deliverables/ or role folder>
 
 The delivery card is the main-chat view; the linked file is the full source of truth. Read or display the full artifact in the Coordinator chat only when the user explicitly asks to open it, revise it, or make a decision that requires its contents. When a child output is not yet approved, link its role-folder path; when approved, link the `deliverables/` path.
 
+## Minimum-context access
+
+Do not automatically read, summarize, or enumerate the full project directory. The current task is the Coordinator, but it also reads project files only when needed for routing or a user decision.
+
+Create `Agent work/shared/context/` with:
+
+- `project-map.md`: a short, Coordinator-maintained map of only the files and modules discovered as relevant.
+- `task-packets/<role>.md`: one compact packet per dispatched task containing the task, exact allowed read paths, exact required outputs, and acceptance criteria.
+
+By default, a Specialist or Verifier reads only the paths named in its task packet. It must not scan the repository, read unrelated files, or load whole documents “just in case.” If essential context is missing, return `Status: needs-context` with the exact path or fact needed and the reason; the Coordinator decides whether to provide it. Do not include large file contents in task messages when a path is sufficient.
+
+This is an instruction-level access boundary, not a security boundary: hosts may still technically grant every task access to the same project directory. Use separate worktrees or host-level sandboxing when true filesystem isolation is required.
+
 ## Thin main-thread reporting
 
 Keep the Coordinator's chat context small. Child Agents write full artifacts to their assigned folders and return only a compact handoff to the Coordinator. Do not paste a child's full response or full artifact into the Coordinator chat by default.
