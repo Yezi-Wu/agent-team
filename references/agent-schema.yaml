@@ -10,6 +10,9 @@ agent:
     may_decide: ["bounded decision"]
     must_escalate: ["decision requiring approval"]
   required_host_capabilities: ["generic capability"]
+  context_access:
+    allowed_read_paths: ["exact/relative/path"]
+    request_more_context_via: "coordinator"
   handoff:
     receives_from: ["agent-id or user"]
     sends_to: ["agent-id or user"]
