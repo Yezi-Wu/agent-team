@@ -1,0 +1,14 @@
+workflow:
+  id: product-discovery
+  name: Product discovery workflow
+  version: "1.0.0"
+  pattern: collaborative
+  trigger: "User requests a product proposal."
+  inputs: [opportunity_statement]
+  steps:
+    - {id: discovery, owner: researcher, action: "Identify user evidence and constraints.", accepts: [opportunity_statement], produces: [insights], on_failure: escalate}
+    - {id: proposal, owner: product_planner, action: "Produce a prioritized proposal.", accepts: [insights], produces: [proposal], on_failure: stop}
+    - {id: challenge, owner: reviewer, action: "Challenge assumptions and missing risks.", accepts: [proposal], produces: [review_report], on_failure: escalate}
+  approval_gates:
+    - {before: proposal, approver: user, condition: "Proposal commits budget, dates, or external scope."}
+  completion_criteria: ["Proposal has measurable outcomes.", "Material risks have owners."]
