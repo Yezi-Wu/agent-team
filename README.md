@@ -100,6 +100,10 @@ For requests that create a team or lasting artifacts, Agent Team uses this layou
 ```text
 Agent work/
 ├── README.md
+├── dashboard.md             # Live coordinator view of every role and handoff
+├── deliverables/            # Approved, user-facing output only
+│   ├── index.md
+│   └── final-summary.md
 ├── shared/
 │   ├── registry.yaml       # Active roles and capabilities
 │   ├── workflow.yaml       # Handoffs, approvals, and failure paths
@@ -113,6 +117,8 @@ Agent work/
 ```
 
 For a software team, roles are normally `product/`, `designer/`, `engineer/`, and `qa/`. Other scenarios use names that fit the work.
+
+Open `Agent work/dashboard.md` when you want one view of all Agent work: current task, status, latest artifact, verifier result, blocker, and next action. Open `Agent work/deliverables/index.md` when you only want the approved final outputs.
 
 ## Collaboration rules
 
