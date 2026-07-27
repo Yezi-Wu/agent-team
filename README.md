@@ -10,7 +10,8 @@ It is an architecture and coordination layer—not an MCP server, a model provid
 
 - Turns a goal into a capability map and a purpose-built agent team.
 - Creates roles from the scenario instead of forcing fixed job titles.
-- Uses a default workflow: **plan → specialist work → independent verification → revision/re-verification → delivery**.
+- Uses a default workflow: **plan → specialist work → independent verification → targeted revision → re-verification → delivery**.
+- Keeps one mandatory Coordinator responsible for all scheduling, state, and Agent-to-Agent handoffs.
 - Places lasting team artifacts in `Agent work/`, with one folder per role and a shared folder for workflow, registry, and trace records.
 - Creates visible role tasks when the host supports separate tasks, then coordinates documented handoffs between them.
 - Keeps risky external actions—publishing, spending, deployments, or real account operations—behind human approval.
@@ -32,11 +33,11 @@ Planner + specialists: perform domain work
   ↓
 Independent verifier: evaluate against the criteria
   ↓
-Fail → revise → re-verify (up to two automatic rounds)
+Fail → targeted revision → one re-verification
 Pass → deliver and record the result
 ```
 
-The verifier is independent from the specialist that produced the work. In software it is usually a QA Agent; in other domains it might be an editorial reviewer, fact checker, compliance reviewer, or learning reviewer.
+The verifier is independent from the specialist that produced the work. Specialists provide requested artifacts and execution evidence; they do not perform a duplicate acceptance review. In software the verifier is usually a QA Agent; in other domains it might be an editorial reviewer, fact checker, compliance reviewer, or learning reviewer.
 
 ## Example teams
 
@@ -116,9 +117,10 @@ For a software team, roles are normally `product/`, `designer/`, `engineer/`, an
 ## Collaboration rules
 
 - Every capability has one accountable owner.
-- Agents hand off documented outputs, not vague chat summaries.
+- The Coordinator is the only role that assigns or redirects work.
+- Agents hand off concise documented outputs: task, exact inputs, output, criteria, constraints, status, and evidence.
 - Specialists do not redefine upstream requirements.
-- The verifier tests against the planner's acceptance criteria, not the implementer's interpretation.
+- The verifier tests against the Coordinator's acceptance criteria, not the implementer's interpretation.
 - Conflicts, changed requirements, risky actions, and repeated failures are escalated to the user.
 - Agents should not edit the same file concurrently.
 
