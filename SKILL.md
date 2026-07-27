@@ -9,7 +9,17 @@ Design the smallest reliable agent system that can achieve the user's goal. The 
 
 ## General collaboration mode
 
-Use this universal loop for every non-trivial multi-agent request by default:
+At the start of every request, the Coordinator must choose a collaboration mode automatically. State the selected mode and one-sentence reason in `dashboard.md` and the first user-facing plan. The user can always override it with `快速模式`, `标准模式`, or `严格模式`.
+
+| Mode | Use when | Required coordination |
+| --- | --- | --- |
+| **Quick** | One low-risk deliverable, few dependencies, easy to reverse | Coordinator assignment → Specialist result → delivery. No receipt or independent verifier unless the user asks. |
+| **Standard** | Multiple dependent roles or a meaningful quality bar | Compact receipt only before a dependent handoff; one final Independent Verifier; one targeted revision and re-verification on failure. |
+| **Strict** | External publication, deployment, spending, sensitive data, irreversible changes, high cost of error, or explicit user request | Receipts for all dependent handoffs, verifier at each meaningful milestone, full trace, explicit approval gates, and no irreversible action without user confirmation. |
+
+Choose **Quick** only if all work is low-risk and easily reversible. Choose **Strict** whenever an irreversible, sensitive, costly, or externally visible action is in scope. Otherwise choose **Standard**. Do not add roles, receipts, or review loops merely from habit; use the smallest mode that makes the outcome reliable.
+
+For Standard and Strict mode, use this universal loop:
 
 ```text
 Clarify outcome and acceptance criteria
@@ -20,7 +30,7 @@ Clarify outcome and acceptance criteria
   -> (pass) Deliver and record the result
 ```
 
-Create roles from required capabilities, not from fixed job titles. Every non-trivial team always needs a **Coordinator**. The Coordinator owns the goal, constraints, acceptance criteria, state, scheduling, and trace. Add Specialists only for required domain work and add one Independent Verifier only when the deliverable needs verification.
+Create roles from required capabilities, not from fixed job titles. Every non-trivial team always needs a **Coordinator**. The Coordinator owns the goal, constraints, acceptance criteria, state, scheduling, and trace. Add Specialists only for required domain work and add one Independent Verifier only when the selected mode requires verification or the deliverable needs it.
 
 The Coordinator is the only role that dispatches or redirects work. Specialists and Verifiers do not directly assign work to one another. They return a structured handoff to the Coordinator, which records it and sends the next minimal task.
 
@@ -112,7 +122,7 @@ Evidence: <paths, test output, sources, or "none">
 
 Use exact names, artifact paths, dates, and supplied facts. Do not use vague directives such as “make it good,” “handle the rest,” “use best practice,” or “complete everything.” Do not invent facts, results, sources, approvals, or completed actions. Mark missing information as `needs-decision` or `blocked`.
 
-Before a dependent Agent starts work, it sends a compact receipt to the Coordinator:
+In Standard mode, before a dependent Agent starts work, it sends a compact receipt to the Coordinator. In Strict mode, do this for every dependent handoff. Quick mode skips the receipt unless a conflict or missing context appears:
 
 ```text
 Received: <Handoff-ID>
@@ -181,7 +191,7 @@ Use host task-creation and task-messaging capabilities only when available. If t
 2. Break the goal into independently verifiable capabilities. Check whether one agent or a simple workflow is sufficient; do not create a multi-agent system for a single straightforward task.
 3. Reuse suitable registered roles when a registry is provided. Create a role only when a reusable role cannot satisfy the capability.
 4. Define each agent with the agent schema in `references/agent-schema.yaml`. Keep authority narrow, handoffs explicit, and outputs testable.
-5. Select a collaboration pattern from `references/patterns.yaml`: sequential by default; parallel only for independent work; hierarchical for dynamic routing; collaborative only where review or structured disagreement adds value. Include the universal verification loop for every non-trivial deliverable.
+5. Select a collaboration pattern from `references/patterns.yaml`: sequential by default; parallel only for independent work; hierarchical for dynamic routing; collaborative only where review or structured disagreement adds value. Apply the selected Quick, Standard, or Strict mode; do not add a verification loop to Quick mode unless risk or the user requires it.
 6. Define a workflow using `references/workflow-schema.yaml`, including entry conditions, handoffs, outputs, failure handling, and human approval gates.
 7. Define registry changes, trace events, and evaluation criteria using the matching references. Never claim that registry, memory, or traces were persisted unless the host actually wrote them.
 8. Present an Agent Blueprint before any material creation or external action, unless the user explicitly asks to create the three-agent workspace. In that case, create the workspace and task windows, then have Product Agent start with the stated brief.
