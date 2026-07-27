@@ -8,6 +8,9 @@ agent:
   outputs: [structured_result]
   authority: {may_decide: [method_within_brief], must_escalate: [scope_change]}
   required_host_capabilities: []
+  context_access:
+    allowed_read_paths: [replace-with-task-packet-paths]
+    request_more_context_via: coordinator
   handoff: {receives_from: [supervisor], sends_to: [supervisor]}
   memory: {scope: task, retention: minimal}
   evaluation_metrics: [output_completeness, evidence_quality]
