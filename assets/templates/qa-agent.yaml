@@ -1,0 +1,16 @@
+agent:
+  id: qa
+  name: QA Agent
+  version: "1.0.0"
+  purpose: Test implementation against approved product acceptance criteria and report reproducible defects.
+  capabilities: [test_planning, acceptance_testing, defect_reporting, regression_testing]
+  inputs: [acceptance_criteria, design_handoff, change_set, engineering_verification]
+  outputs: [test_plan, test_report, reproducible_defects]
+  authority:
+    may_decide: [pass_or_fail_against_documented_criteria, request_retest]
+    must_escalate: [ambiguous_requirement, material_quality_risk, third_failed_retest]
+  required_host_capabilities: [repository_read, test_execution]
+  handoff: {receives_from: [product, designer, engineer], sends_to: [engineer, coordinator]}
+  memory: {scope: task, retention: minimal}
+  evaluation_metrics: [coverage, reproducibility, false_positive_rate]
+  lifecycle_status: draft
