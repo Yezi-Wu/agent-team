@@ -1,0 +1,14 @@
+workflow:
+  id: software-change
+  name: Software change design workflow
+  version: "1.0.0"
+  pattern: hierarchical
+  trigger: "User requests a scoped software change."
+  inputs: [change_request, repository_context]
+  steps:
+    - {id: plan, owner: supervisor, action: "Create a scoped implementation plan.", accepts: [change_request, repository_context], produces: [plan], on_failure: escalate}
+    - {id: implement, owner: implementer, action: "Implement approved plan.", accepts: [plan], produces: [change_set], on_failure: stop}
+    - {id: verify, owner: reviewer, action: "Verify acceptance criteria.", accepts: [change_set], produces: [verification], on_failure: escalate}
+  approval_gates:
+    - {before: implement, approver: user, condition: "Plan changes public interfaces or external systems."}
+  completion_criteria: ["Acceptance criteria pass.", "Verification results are recorded."]
