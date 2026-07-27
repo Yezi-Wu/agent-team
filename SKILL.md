@@ -40,6 +40,13 @@ Do not force a Design or Engineering role into a scenario where it does not add 
 
 For any request that creates a team or produces lasting artifacts, put all team documents in `Agent work/` at the selected project root. Create a subfolder for every role and a `shared/` folder for the workflow, registry, and trace. Do this without requiring the user to repeat it.
 
+Create these two project-wide views in every `Agent work/` workspace:
+
+- `dashboard.md`: the Coordinator's single status view. Update it after every dispatch, result, decision, verifier outcome, and blocker. Include each role, current task, status, latest artifact path, verifier result, blocker, and next action.
+- `deliverables/`: the user's single output exit. Include `index.md` with links to every approved final artifact and `final-summary.md` when the workflow completes. Put only user-facing, approved outputs here; keep working notes and drafts in role folders.
+
+Each Agent result must name its exact artifact path. The Coordinator adds that path to `dashboard.md`. Only after the Verifier passes an artifact, the Coordinator adds it to `deliverables/index.md` or creates the needed final user-facing copy there. Never list a draft as a deliverable.
+
 Do not require Specialists to self-review. A Specialist supplies the requested artifact and concrete execution evidence only. The Independent Verifier performs the quality and acceptance check. When it fails, the Coordinator sends the specific failed criteria to the responsible Specialist, then schedules one re-verification. Escalate repeated failures or changed criteria to the user. Do not enable automatic external publication, account actions, spending, deployment, or other irreversible actions; request approval for those actions.
 
 ## Concise handoffs
@@ -65,6 +72,10 @@ Use this mode when the scenario requires software delivery. Work in the selected
 ```text
 Agent work/
   README.md
+  dashboard.md
+  deliverables/
+    index.md
+    final-summary.md
   shared/
     registry.yaml
     workflow.yaml
@@ -82,7 +93,7 @@ Create three separate visible Codex tasks, each pointed at the same local projec
 - **Engineer Agent**: read approved product and design handoffs, then implement only in the project area requested by the user. Write `Agent work/engineer/implementation-notes.md` and `evidence.md`; do not perform a separate acceptance review.
 - **QA Agent**: read `Agent work/product/acceptance-criteria.md`, the design handoff, and engineering evidence. Write `Agent work/qa/test-report.md`. Report only failed criteria with reproducible steps; do not silently redefine the requirements.
 
-Act as **Coordinator** in the originating task. Do not create another Coordinator window. Record every task, result, decision, and handoff in `Agent work/shared/trace.md`; maintain `registry.yaml` and `workflow.yaml`; and send every Agent message. Send the next task only after its required upstream files exist and the user has approved any stated approval gate. Do not ask agents to edit the same file. Pause and ask the user when a downstream agent finds an unresolved contradiction.
+Act as **Coordinator** in the originating task. Do not create another Coordinator window. Record every task, result, decision, and handoff in `Agent work/shared/trace.md`; maintain `registry.yaml`, `workflow.yaml`, and the project `dashboard.md`; maintain `deliverables/index.md` as the only approved-output list; and send every Agent message. Send the next task only after its required upstream files exist and the user has approved any stated approval gate. Do not ask agents to edit the same file. Pause and ask the user when a downstream agent finds an unresolved contradiction.
 
 For product work that includes implementation, use this specialized loop by default:
 
