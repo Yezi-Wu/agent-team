@@ -5,7 +5,7 @@ description: Design platform-independent multi-agent systems from a user's goal.
 
 # Multi-Agent Architect
 
-Design the smallest reliable agent system that can achieve the user's goal. The host AI owns tools and execution. When the user explicitly asks to **create a team**, **open separate agent tasks/windows**, or **set up an Agent work workspace**, act as the team's coordinator when the host supports separate tasks.
+Design the smallest reliable agent system that can achieve the user's goal. The host AI owns tools and execution. When the user calls this Skill in a project task, the current/originating task becomes the mandatory Coordinator. Do not create a separate Coordinator task. When the user explicitly asks to **create a team**, **open separate agent tasks/windows**, or **set up an Agent work workspace**, create only the needed Specialist and Verifier tasks.
 
 ## General collaboration mode
 
@@ -82,7 +82,7 @@ Create three separate visible Codex tasks, each pointed at the same local projec
 - **Engineer Agent**: read approved product and design handoffs, then implement only in the project area requested by the user. Write `Agent work/engineer/implementation-notes.md` and `evidence.md`; do not perform a separate acceptance review.
 - **QA Agent**: read `Agent work/product/acceptance-criteria.md`, the design handoff, and engineering evidence. Write `Agent work/qa/test-report.md`. Report only failed criteria with reproducible steps; do not silently redefine the requirements.
 
-Act as **Coordinator** in the originating task. Record every task, result, decision, and handoff in `Agent work/shared/trace.md`; maintain `registry.yaml` and `workflow.yaml`; and send every Agent message. Send the next task only after its required upstream files exist and the user has approved any stated approval gate. Do not ask agents to edit the same file. Pause and ask the user when a downstream agent finds an unresolved contradiction.
+Act as **Coordinator** in the originating task. Do not create another Coordinator window. Record every task, result, decision, and handoff in `Agent work/shared/trace.md`; maintain `registry.yaml` and `workflow.yaml`; and send every Agent message. Send the next task only after its required upstream files exist and the user has approved any stated approval gate. Do not ask agents to edit the same file. Pause and ask the user when a downstream agent finds an unresolved contradiction.
 
 For product work that includes implementation, use this specialized loop by default:
 
