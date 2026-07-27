@@ -8,8 +8,10 @@ workflow:
   steps:
     - id: "step-1"
       owner: "agent-id"
+      handoff_id: "H-001"
       action: "verifiable action"
       accepts: ["input"]
+      input_versions: ["path@version"]
       produces: ["output"]
       on_failure: "retry | escalate | stop"
   approval_gates:
