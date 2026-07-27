@@ -1,0 +1,14 @@
+agent:
+  id: specialist
+  name: Specialist
+  version: "1.0.0"
+  purpose: Complete one bounded domain task.
+  capabilities: [replace-with-capability]
+  inputs: [assigned_brief]
+  outputs: [structured_result]
+  authority: {may_decide: [method_within_brief], must_escalate: [scope_change]}
+  required_host_capabilities: []
+  handoff: {receives_from: [supervisor], sends_to: [supervisor]}
+  memory: {scope: task, retention: minimal}
+  evaluation_metrics: [accuracy, completeness]
+  lifecycle_status: draft
