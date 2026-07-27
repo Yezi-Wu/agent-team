@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Team"
+  short_description: "Create and coordinate reusable AI teams."
+  default_prompt: "Use $agent-team to create an AI team for my goal."
