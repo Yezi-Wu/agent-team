@@ -1,0 +1,13 @@
+patterns:
+  sequential:
+    use_when: "Each output is required by the next step."
+    avoid_when: "Work can be safely performed independently."
+  parallel:
+    use_when: "Tasks are independent and can be merged against explicit criteria."
+    avoid_when: "Agents depend on unverified outputs from one another."
+  hierarchical:
+    use_when: "A coordinator must route changing work among specialized roles."
+    avoid_when: "The route is fixed and simple."
+  collaborative:
+    use_when: "Independent critique, synthesis, or disagreement improves the decision."
+    avoid_when: "Extra review adds no meaningful risk reduction."
