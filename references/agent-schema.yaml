@@ -1,0 +1,20 @@
+agent:
+  id: "kebab-case-identifier"
+  name: "Human-readable role name"
+  version: "1.0.0"
+  purpose: "One-sentence responsibility"
+  capabilities: ["capability"]
+  inputs: ["named input"]
+  outputs: ["verifiable output"]
+  authority:
+    may_decide: ["bounded decision"]
+    must_escalate: ["decision requiring approval"]
+  required_host_capabilities: ["generic capability"]
+  handoff:
+    receives_from: ["agent-id or user"]
+    sends_to: ["agent-id or user"]
+  memory:
+    scope: "none | task | project | user"
+    retention: "minimal retention rule"
+  evaluation_metrics: ["accuracy", "completeness"]
+  lifecycle_status: "draft | active | deprecated | retired"
