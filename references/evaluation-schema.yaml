@@ -1,0 +1,10 @@
+evaluation:
+  target: "agent-id or workflow-id"
+  version: "evaluated version"
+  criteria:
+    - name: "accuracy"
+      measurement: "how it is judged"
+      threshold: "pass threshold"
+  review_method: "automated | human | mixed"
+  findings: ["observation"]
+  recommended_action: "retain | revise | deprecate"
