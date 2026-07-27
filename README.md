@@ -128,7 +128,8 @@ Child Agents keep their full work in files. The Coordinator shows a short delive
 
 - Every capability has one accountable owner.
 - The Coordinator is the only role that assigns or redirects work.
-- Agents hand off concise documented outputs: task, exact inputs, output, criteria, constraints, status, and evidence.
+- Agents hand off concise documented outputs: handoff ID, exact inputs and versions, output, criteria, constraints, status, and evidence.
+- A dependent Agent sends a short `accepted` receipt before it starts; missing or conflicting information returns to the Coordinator instead of becoming an assumption.
 - Specialists do not redefine upstream requirements.
 - The verifier tests against the Coordinator's acceptance criteria, not the implementer's interpretation.
 - Conflicts, changed requirements, risky actions, and repeated failures are escalated to the user.
