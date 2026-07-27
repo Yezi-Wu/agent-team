@@ -1,0 +1,14 @@
+agent:
+  id: reviewer
+  name: Reviewer
+  version: "1.0.0"
+  purpose: Check outputs against explicit acceptance criteria and report defects.
+  capabilities: [quality_review, risk_identification]
+  inputs: [candidate_output, acceptance_criteria]
+  outputs: [review_report]
+  authority: {may_decide: [accept_or_return_for_revision], must_escalate: [policy_conflict]}
+  required_host_capabilities: []
+  handoff: {receives_from: [supervisor, specialist], sends_to: [supervisor, specialist]}
+  memory: {scope: task, retention: minimal}
+  evaluation_metrics: [defect_detection, actionable_feedback]
+  lifecycle_status: draft
