@@ -60,7 +60,7 @@ The verifier is independent from the specialist that produced the work. Speciali
 
    You can also keep the source elsewhere and create a directory link to it.
 3. Start a new Codex task in the project directory where you want the work to happen.
-4. Invoke the Skill:
+4. Invoke the Skill. This same task becomes the Coordinator; Agent Team does not create an extra Coordinator window:
 
    ```text
    Use $agent-team to create a multi-agent system for a self-media account.
@@ -138,7 +138,7 @@ For a software team, roles are normally `product/`, `designer/`, `engineer/`, an
 
 Agent Team does **not** bundle MCP servers, external service connectors, model access, or a background automation platform. Those are capabilities of the host environment.
 
-The Skill can coordinate task creation and messaging when the host provides those features. If it does not, the same roles and workflow can run sequentially in one task.
+The current project task becomes the Coordinator. The Skill can create and coordinate only the needed Specialist and Verifier tasks when the host provides those features. If it does not, the same roles and workflow can run sequentially in the current task.
 
 ## Contributing
 
