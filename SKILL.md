@@ -30,11 +30,32 @@ Clarify outcome and acceptance criteria
   -> (pass) Deliver and record the result
 ```
 
+## Execution and terminal states
+
+Do not treat analysis, planning, preparation, acknowledgement, or a recommendation as a completed task. For every dispatched task, require exactly one terminal state:
+
+| State | Required result |
+| --- | --- |
+| `DONE` | Exact output path and concrete evidence that the requested artifact or action exists. |
+| `BLOCKED` | Exact blocker, its impact, and the named file, fact, permission, or action needed to resume. Use `reason: needs-context` when required input is missing. |
+| `NEEDS-DECISION` | A user decision card: question, bounded options, consequence of each option, affected work, and the reply needed to resume. |
+| `FAILED` | Failed tool or action, observed error, impact, and one recovery recommendation. |
+
+Apply the selected mode as follows:
+
+- **Quick:** execute immediately after receiving a complete task. Do not send a routine receipt.
+- **Standard:** validate inputs briefly, then execute in the same turn. A receipt is informational only and must never be a separate stopping point.
+- **Strict:** send a separate receipt only when the Coordinator must verify versions, permissions, or an approval gate before work. Mark the task `BLOCKED` with `reason: awaiting-release` until the Coordinator explicitly releases it.
+
+If inputs are complete, do the work now. Do not finish a turn with only “ready,” “prepared,” “analyzed,” or “understood.” The Coordinator must verify the required output path and evidence before accepting `DONE`. A response without a valid terminal state, or a `DONE` without its required artifact, is `incomplete`, not complete: send one focused recovery instruction. If it still lacks a valid terminal state, mark it `BLOCKED` and show the user the exact issue.
+
+When user input causes a pause, the Coordinator must present a compact decision card in the main chat and record it in `dashboard.md` and `trace.md`. Continue unrelated ready tasks; pause only tasks that depend on that decision.
+
 Create roles from required capabilities, not from fixed job titles. Every non-trivial team always needs a **Coordinator**. The Coordinator owns the goal, constraints, acceptance criteria, state, scheduling, and trace. Add Specialists only for required domain work and add one Independent Verifier only when the selected mode requires verification or the deliverable needs it.
 
 The Coordinator is the only role that dispatches or redirects work. Specialists and Verifiers do not directly assign work to one another. They return a structured handoff to the Coordinator, which records it and sends the next minimal task.
 
-Do not use free-form Agent-to-Agent chat as the source of truth. The Coordinator communicates through versioned task packets and recorded results. The priority for resolving a conflict is: explicit user confirmation, latest confirmed version, accepted acceptance criteria, current task packet, then no assumption. If none resolves the conflict, stop with `Status: needs-decision`.
+Do not use free-form Agent-to-Agent chat as the source of truth. The Coordinator communicates through versioned task packets and recorded results. The priority for resolving a conflict is: explicit user confirmation, latest confirmed version, accepted acceptance criteria, current task packet, then no assumption. If none resolves the conflict, stop with `Status: NEEDS-DECISION`.
 
 Choose domain names that make the team understandable. For example:
 
@@ -83,7 +104,7 @@ Create `Agent work/shared/context/` with:
 - `project-map.md`: a short, Coordinator-maintained map of only the files and modules discovered as relevant.
 - `task-packets/<role>.md`: one compact packet per dispatched task containing the task, exact allowed read paths, exact required outputs, and acceptance criteria.
 
-By default, a Specialist or Verifier reads only the paths named in its task packet. It must not scan the repository, read unrelated files, or load whole documents “just in case.” If essential context is missing, return `Status: needs-context` with the exact path or fact needed and the reason; the Coordinator decides whether to provide it. Do not include large file contents in task messages when a path is sufficient.
+By default, a Specialist or Verifier reads only the paths named in its task packet. It must not scan the repository, read unrelated files, or load whole documents “just in case.” If essential context is missing, return `Status: BLOCKED` with `reason: needs-context`, the exact path or fact needed, and the reason; the Coordinator decides whether to provide it. Do not include large file contents in task messages when a path is sufficient.
 
 This is an instruction-level access boundary, not a security boundary: hosts may still technically grant every task access to the same project directory. Use separate worktrees or host-level sandboxing when true filesystem isolation is required.
 
@@ -116,13 +137,13 @@ Input versions: <path@version or path@timestamp>
 Output: <named artifact or result>
 Criteria: <objective pass conditions>
 Constraints: <scope, format, or authority limits>
-Status: <done | blocked | needs-decision>
+Status: <DONE | BLOCKED | NEEDS-DECISION | FAILED>
 Evidence: <paths, test output, sources, or "none">
 ```
 
-Use exact names, artifact paths, dates, and supplied facts. Do not use vague directives such as “make it good,” “handle the rest,” “use best practice,” or “complete everything.” Do not invent facts, results, sources, approvals, or completed actions. Mark missing information as `needs-decision` or `blocked`.
+Use exact names, artifact paths, dates, and supplied facts. Do not use vague directives such as “make it good,” “handle the rest,” “use best practice,” or “complete everything.” Do not invent facts, results, sources, approvals, or completed actions. Mark missing information as `NEEDS-DECISION` or `BLOCKED`.
 
-In Standard mode, before a dependent Agent starts work, it sends a compact receipt to the Coordinator. In Strict mode, do this for every dependent handoff. Quick mode skips the receipt unless a conflict or missing context appears:
+In Strict mode, before a dependent Agent starts work, it sends a compact receipt when a Coordinator release is required. In Standard mode, embed any needed confirmation in the same turn as the execution; Quick mode skips routine receipts:
 
 ```text
 Received: <Handoff-ID>
@@ -130,10 +151,10 @@ Understood task: <one sentence>
 Inputs available: <paths>
 Expected output: <path>
 Missing or conflicting information: <none | exact item>
-Status: <accepted | needs-decision>
+Status: <accepted | BLOCKED | NEEDS-DECISION>
 ```
 
-The Coordinator checks that referenced files exist, input versions match, outputs do not conflict with another Agent's ownership, and criteria are executable. Do not dispatch when the receipt reports missing or conflicting information. Record the receipt and any decision in `trace.md`; do not repeat full artifacts in messages.
+The Coordinator checks that referenced files exist, input versions match, outputs do not conflict with another Agent's ownership, and criteria are executable. Do not release a Strict task when the receipt reports missing or conflicting information. Record the receipt and any decision in `trace.md`; do not repeat full artifacts in messages.
 
 ## Product, Design, Engineering, QA workspace mode
 
