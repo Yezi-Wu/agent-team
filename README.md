@@ -45,6 +45,101 @@ Use Agent Team when a request has several dependent pieces of work, requires ind
 
 Do not use a multi-agent system for a simple, one-step task. A single focused agent is usually faster and clearer.
 
+## Install and use in different AI tools
+
+Agent Team is a portable instruction package. It works best in hosts that support `SKILL.md`, but it can also be used through the **universal prompt** below. Compatibility means the host can follow the workflow; it does **not** mean every host can create visible subagent windows or run background work.
+
+### Choose your host
+
+| Tool | Recommended setup | Notes |
+| --- | --- | --- |
+| Codex | Install as a personal or project Skill | Native `SKILL.md` workflow. |
+| Claude Code | Install as a personal or project Skill | Native Skill support and slash-command invocation. |
+| Google Antigravity | Install as a workspace or global Skill | Native `SKILL.md` support. |
+| Cursor | Use a Project Rule or the universal prompt | Cursor documents Rules; do not assume it discovers `SKILL.md` directly. |
+| Trae | Use the universal prompt | Its public Skill installation path was not verified for this release. |
+| Work Buddy / WorkBuddy | Use the universal prompt unless its own documentation confirms a Skill location | Work Buddy is built on Claude Code but has its own workflow runtime; Agent Team does not replace it. |
+
+### Universal prompt: works in any capable AI tool
+
+1. Clone or download this repository somewhere the AI tool can read.
+2. Open your project in that tool.
+3. Send this message, replacing the path if needed:
+
+```text
+Read <path-to-agent-team>/SKILL.md and follow Agent Team for this project.
+Use the current conversation as Coordinator. Create only the necessary specialist and verifier tasks if supported.
+My goal: <describe your goal>.
+```
+
+This is the fallback for tools without a verified native Skill location. Keep the repository or its `agent-team/` folder accessible to the project; do not paste the entire Skill into every task.
+
+### Codex
+
+1. Clone or download the repository.
+2. Put or link the `agent-team/` folder in your personal Skill directory:
+
+   ```text
+   ~/.codex/skills/agent-team/
+   ```
+
+   On Windows, this commonly resolves to:
+
+   ```text
+   C:\Users\<your-user>\.codex\skills\agent-team\
+   ```
+
+3. Start a task in the project directory and send:
+
+   ```text
+   Use $agent-team to create a multi-agent system for <your goal>.
+   ```
+
+### Claude Code
+
+1. Clone or download the repository.
+2. Copy or link `agent-team/` to one of these locations:
+
+   ```text
+   ~/.claude/skills/agent-team/          # personal: all projects
+   <project-root>/.claude/skills/agent-team/  # project only
+   ```
+
+3. Start Claude Code in the project, then invoke:
+
+   ```text
+   /agent-team Create a multi-agent system for <your goal>.
+   ```
+
+   You can also describe a matching task and let Claude Code load the Skill automatically. Claude Code documents live updates for existing Skill directories; a newly created top-level Skill directory may require a restart.
+
+### Google Antigravity
+
+1. Copy or link `agent-team/` to one of these locations:
+
+   ```text
+   <workspace-root>/.agents/skills/agent-team/       # this workspace
+   ~/.gemini/config/skills/agent-team/                # all workspaces
+   ```
+
+2. Open the project in Antigravity and start an Agent conversation.
+3. Mention `Agent Team` by name, or use the universal prompt above. Antigravity can discover the Skill from its name and description.
+
+### Cursor
+
+Cursor's documented customization surface is **Rules**. Keep this repository in or beside your project, then either:
+
+- create a project Rule that tells Cursor to read `<path-to-agent-team>/SKILL.md` when asked to plan or coordinate a multi-agent workflow; or
+- send the universal prompt in the Agent chat.
+
+Use the same Agent Team workspace and delivery structure after the instructions load. Do not claim native `SKILL.md` discovery in Cursor unless the installed Cursor version documents it.
+
+### Trae and WorkBuddy
+
+For Trae, and for products called WorkBuddy whose native Skill folders are not confirmed, use the universal prompt. This gives the Agent the same instructions without relying on a guessed installation path.
+
+If you mean [Work Buddy](https://docs.work-buddy.ai/), install it according to its own documentation first, then make the Agent Team folder available to the Claude Code project it uses. Work Buddy provides its own workflows and background services; Agent Team supplies the multi-agent design and delivery rules.
+
 ## Core model
 
 ```text
@@ -72,7 +167,7 @@ The verifier is independent from the specialist that produced the work. Speciali
 | Recruiting | Hiring Manager | Sourcing, Screening, Interview Support | Compliance Reviewer |
 | Learning plan | Learning Planner | Research, Curriculum Builder | Learning Reviewer |
 
-## Quick start in Codex
+## First project: quick start in Codex
 
 1. Clone or download this repository.
 2. Put the `agent-team` folder in a Codex-discoverable Skill directory. A common location is:
