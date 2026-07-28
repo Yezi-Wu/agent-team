@@ -22,11 +22,22 @@ At the start of a task, the Coordinator automatically chooses the lightest safe 
 
 | Mode | Typical use | What happens |
 | --- | --- | --- |
-| **Quick** | A low-risk, easily reversible result | Assign → produce → deliver. No routine receipt or separate review. |
-| **Standard** | Normal multi-Agent work with dependencies | A short receipt before dependent work; one final independent review; one focused repair if it fails. |
-| **Strict** | Publishing, deployment, spending, sensitive data, irreversible work, or high error cost | Full handoff receipts, milestone reviews, detailed trace, and explicit human approval before irreversible actions. |
+| **Quick** | A low-risk, easily reversible result | Assign → execute immediately → deliver. No routine receipt or separate review. |
+| **Standard** | Normal multi-Agent work with dependencies | Check inputs, then execute in the same turn; one final independent review; one focused repair if it fails. |
+| **Strict** | Publishing, deployment, spending, sensitive data, irreversible work, or high error cost | Receipt and Coordinator release before controlled work; milestone reviews, detailed trace, and explicit human approval before irreversible actions. |
 
 The Skill chooses **Strict** automatically for external or irreversible actions, **Quick** only for simple low-risk work, and **Standard** for the normal case. This avoids paying for unnecessary back-and-forth while keeping important work reliable.
+
+## Execution and user decision cards
+
+“Ready”, “analyzed”, “prepared”, and “understood” are never task-completion states. When inputs are complete, an Agent must execute now and end with one of four states:
+
+- `DONE`: exact output path and evidence.
+- `BLOCKED`: exact missing input, permission, or other blocker, plus what will resume work.
+- `NEEDS-DECISION`: a compact user card with the question, options, consequences, affected work, and required reply.
+- `FAILED`: the failed action or tool, observed error, impact, and recovery suggestion.
+
+The Coordinator verifies the named output before accepting `DONE`. An analysis-only result is incomplete and receives one focused recovery request; it is never silently treated as finished. When a user decision is required, unrelated work continues and only dependent work pauses.
 
 ## When to use it
 
@@ -141,7 +152,7 @@ Child Agents keep their full work in files. The Coordinator shows a short delive
 - Every capability has one accountable owner.
 - The Coordinator is the only role that assigns or redirects work.
 - Agents hand off concise documented outputs: handoff ID, exact inputs and versions, output, criteria, constraints, status, and evidence.
-- In Standard mode, a dependent Agent sends a short `accepted` receipt before it starts; Strict mode does this for every dependent handoff. Quick mode skips routine receipts.
+- Quick mode executes immediately. Standard mode may acknowledge inputs, but it must execute in the same turn. Strict mode uses a separate receipt only when the Coordinator must explicitly release the work.
 - Specialists do not redefine upstream requirements.
 - The verifier tests against the Coordinator's acceptance criteria, not the implementer's interpretation.
 - Conflicts, changed requirements, risky actions, and repeated failures are escalated to the user.
