@@ -13,6 +13,8 @@ workflow:
       accepts: ["input"]
       input_versions: ["path@version"]
       produces: ["output"]
+      execution_rule: "execute_immediately_after_input_check | await_coordinator_release"
+      terminal_statuses: ["DONE", "BLOCKED", "NEEDS-DECISION", "FAILED"]
       on_failure: "retry | escalate | stop"
   approval_gates:
     - before: "step-id"
