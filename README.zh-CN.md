@@ -45,6 +45,101 @@ Skill 遇到外部或不可逆操作会自动选“严格”；只有简单低�
 
 如果只是一个简单的一步任务，直接使用单个 Agent 通常更快、更清楚，不必强行拆成多 Agent。
 
+## 在不同 AI 工具中安装和使用
+
+Agent Team 是一套可携带的工作说明。支持 `SKILL.md` 的工具可以原生安装；不支持或尚未确认安装位置的工具，也可以使用下面的“通用调用提示词”。“兼容”只代表工具可以按这套流程工作，**不代表**每个工具都能创建可见子 Agent 窗口或持续后台运行。
+
+### 工具选择
+
+| 工具 | 推荐方式 | 说明 |
+| --- | --- | --- |
+| Codex | 安装为个人或项目 Skill | 原生支持 `SKILL.md` 工作流。 |
+| Claude Code | 安装为个人或项目 Skill | 原生支持 Skill 和斜杠命令调用。 |
+| Google Antigravity | 安装为工作区或全局 Skill | 原生支持 `SKILL.md`。 |
+| Cursor | 使用项目 Rule 或通用提示词 | Cursor 官方说明的是 Rules，不应默认它会直接发现 `SKILL.md`。 |
+| Trae | 使用通用提示词 | 本 README 更新时未确认其统一的原生 Skill 安装目录。 |
+| Work Buddy / WorkBuddy | 除非官方文档明确支持，否则使用通用提示词 | Work Buddy 基于 Claude Code，但有自己的工作流系统；Agent Team 不替代它。 |
+
+### 通用调用提示词：任何有文件读取能力的 AI 工具都可用
+
+1. Clone 或下载本仓库，并放到 AI 工具可读取的位置。
+2. 在工具中打开你的项目。
+3. 发送以下提示词；必要时替换路径：
+
+```text
+读取 <agent-team 文件夹路径>/SKILL.md，并在当前项目中遵循 Agent Team 规则。
+将当前对话作为总控；如果工具支持，再只创建必要的专业执行与审核任务。
+我的目标是：<写下你的目标>。
+```
+
+这适用于没有确认原生安装目录的工具。请让仓库或 `agent-team/` 文件夹保持在当前项目可读取范围内；不需要把整份 Skill 复制到每一个子 Agent 对话中。
+
+### Codex
+
+1. Clone 或下载本仓库。
+2. 将 `agent-team/` 文件夹复制或建立目录链接到个人 Skill 目录：
+
+   ```text
+   ~/.codex/skills/agent-team/
+   ```
+
+   Windows 常见位置：
+
+   ```text
+   C:\Users\<你的用户名>\.codex\skills\agent-team\
+   ```
+
+3. 在项目目录中新建任务，然后发送：
+
+   ```text
+   使用 $agent-team，为 <你的目标> 创建多 Agent 体系。
+   ```
+
+### Claude Code
+
+1. Clone 或下载本仓库。
+2. 将 `agent-team/` 复制或建立目录链接到以下任一位置：
+
+   ```text
+   ~/.claude/skills/agent-team/               # 个人：所有项目可用
+   <项目根目录>/.claude/skills/agent-team/    # 仅当前项目可用
+   ```
+
+3. 在项目目录中启动 Claude Code，再调用：
+
+   ```text
+   /agent-team 为 <你的目标> 创建多 Agent 体系。
+   ```
+
+   也可以直接描述匹配的任务，让 Claude Code 自动加载。Claude Code 会监测已有 Skill 目录的修改；如果启动会话后才新建顶层 Skill 目录，可能需要重启一次。
+
+### Google Antigravity
+
+1. 将 `agent-team/` 复制或建立目录链接到以下任一位置：
+
+   ```text
+   <工作区根目录>/.agents/skills/agent-team/  # 仅当前工作区
+   ~/.gemini/config/skills/agent-team/         # 所有工作区可用
+   ```
+
+2. 在 Antigravity 中打开项目并启动 Agent 对话。
+3. 直接提到 `Agent Team`，或使用上面的通用提示词。Antigravity 会根据 Skill 名称和说明发现它。
+
+### Cursor
+
+Cursor 当前官方说明的自定义入口是 **Rules**。请将本仓库放在项目中或项目旁边，然后选择其一：
+
+- 创建一条项目 Rule，要求 Cursor 在需要规划或协调多 Agent 工作流时读取 `<agent-team 文件夹路径>/SKILL.md`；或
+- 直接在 Agent 对话中发送通用调用提示词。
+
+说明加载后，仍按 Agent Team 的 `Agent work/` 工作区和交付规则执行。除非你当前 Cursor 版本明确说明支持，否则不要假设它会原生发现 `SKILL.md`。
+
+### Trae 和 WorkBuddy
+
+对于 Trae，以及未确认原生 Skill 目录的 WorkBuddy 产品，请使用通用调用提示词。这样不依赖猜测的安装路径，也可以让 Agent 读取同一套规则。
+
+如果你说的是 [Work Buddy](https://docs.work-buddy.ai/)，请先按它自己的文档完成安装，再让 Agent Team 文件夹位于其 Claude Code 项目可访问的位置。Work Buddy 提供自己的工作流和后台服务；Agent Team 提供多 Agent 的分工、交付和审核规则。
+
 ## 核心工作方式
 
 ```text
@@ -72,7 +167,7 @@ Skill 遇到外部或不可逆操作会自动选“严格”；只有简单低�
 | 招聘 | 招聘负责人 | 候选人搜寻、简历筛选、面试支持 | 合规审核 Agent |
 | 学习计划 | 学习规划 Agent | 资料研究、课程设计 | 学习评审 Agent |
 
-## 在 Codex 中快速开始
+## 第一个项目：在 Codex 中快速开始
 
 1. Clone 或下载本仓库。
 2. 将 `agent-team` 文件夹放到 Codex 可识别的 Skill 目录。常见位置是：
