@@ -6,6 +6,8 @@ agent:
   capabilities: ["capability"]
   inputs: ["named input"]
   outputs: ["verifiable output"]
+  execution_rule: "execute_immediately_after_input_check | await_coordinator_release"
+  terminal_statuses: ["DONE", "BLOCKED", "NEEDS-DECISION", "FAILED"]
   authority:
     may_decide: ["bounded decision"]
     must_escalate: ["decision requiring approval"]
